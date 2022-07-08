@@ -23,7 +23,7 @@ import {getAllProducts,getAllProductsSucc,getAllProductsFail,
 export const login = (user) => async (dispatch) =>{
     dispatch(loginStart());
     try {
-        const res = await publicRequest.post('/auth/login',user);
+        const res = await publicRequest.post('/auth/admin/login',user);
         dispatch(loginSuccess(res.data));
     } catch (error) {
         console.log(error)
@@ -46,11 +46,31 @@ export const getLastestUsers = () => async (dispatch) =>{
 export const addusers = (user) => async (dispatch) =>{
     dispatch(addUser());
     try {
-        const res = await publicRequest.post('/product',user);
+        const res = await userRequest.post('/users/adduser',user);
         dispatch(addUserSucc(res.data));
     } catch (error) {
-        console.log(error)
-        dispatch(addUserFail(error.response.data));
+        dispatch(addUserFail(error));
+    }
+}
+//updateUser
+export const updateUsers = (user) => async (dispatch) =>{
+    dispatch(updateUser());
+    try {
+        const res = await userRequest.put(`/users/${user.id}`,user.input);
+        dispatch(updateUserSucc(user));
+    } catch (error) {
+        console.log(user)
+        dispatch(updateUserFail(error));
+    }
+}
+//DeleteUsers
+export const deleteUsers = (id) => async(dispatch) =>{
+    dispatch(deleteUser());
+    try {
+        const res = await userRequest.get("/users/getallusers");
+        dispatch(deleteUserSucc(id));
+    } catch (error) {
+        dispatch(deleteUserFail(error.response.data))
     }
 }
 // getAllUsers

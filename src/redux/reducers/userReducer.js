@@ -9,10 +9,13 @@ const userSlice = createSlice({
     },reducers:{
         loginStart:(state)=>{
             state.isFetching=true;
+            state.error = null;
         },
         loginSuccess:(state,action)=>{
             state.isFetching=false;
             state.currentUser=action.payload;
+            localStorage.setItem("user", JSON.stringify(state.currentUser.accessToken));   
+            window.location.reload(false);
         },
         loginFail:(state,action)=>{
             state.isFetching=false;
@@ -20,6 +23,8 @@ const userSlice = createSlice({
         },
         logout:(state)=>{
             state.currentUser=null;
+            localStorage.removeItem("user")
+
         },
        
     }

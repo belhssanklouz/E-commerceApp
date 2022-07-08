@@ -11,7 +11,8 @@ const statsSlice = createSlice({
     reducers:{
         //stats for users per month
         getAllStats:(state)=>{
-            state.isFetching=true
+            state.isFetching=true;
+            state.error=null;
         },
         getAllStatsSucc:(state,action)=>{
             state.isFetching=false;

@@ -5,13 +5,21 @@ import { userRows } from "../../dummyData";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { deleteUsers } from "../../redux/apiCalls";
 
 export default function UserList() {
+  const dispatch = useDispatch();
   const users = useSelector(state=>state.manageUsers.users)  
   const [data, setData] = useState(userRows);
 
   const handleDelete = (id) => {
-    setData(data.filter((item) => item.id !== id));
+    const confirm = window.confirm("do you want to delete the item")
+    if(confirm) {
+      dispatch(deleteUsers(id))
+    }
+
+    // setData(data.filter((item) => item.id !== id));
   };
   
   const columns = [

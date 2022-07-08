@@ -24,7 +24,7 @@ function App() {
   
   const error = useSelector(state=>state.stats.error);
   console.log(error)
-  const admin = error ==="Invalid Token" ? null : JSON.parse(JSON.parse(localStorage.getItem("persist:root")).currentUser).isAdmin;
+  const admin = error ==="Invalid Token" ? null : JSON.parse(localStorage.getItem("user"));
   console.log(admin)
   return (
     <Router>
@@ -34,8 +34,9 @@ function App() {
         </Route>
       { admin ? (
       <><Topbar />
-      <div className="container">
-        <Sidebar />
+      <Route render={(props)=>(
+        <div className="container">
+        <Sidebar {...props}/>
           <Route exact path="/">
             <Home />
           </Route>
@@ -58,6 +59,7 @@ function App() {
             <NewProduct />
           </Route>
           </div>
+          )}/>
           </>):
           <Redirect to='/login' />}
         </Switch>
