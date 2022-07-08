@@ -1,6 +1,6 @@
 import { Add, Remove } from '@material-ui/icons';
 import styled from 'styled-components';
-
+import { useDispatch } from 'react-redux';
 import Announcements from '../Components/Announcements'
 import Footer from '../Components/Footer'
 import NavBar from '../Components/NavBar'
@@ -11,6 +11,7 @@ import StripeCheckout from 'react-stripe-checkout';
 import { useEffect,useState } from 'react';
 import { userRequest } from '../requestMethods';
 import {useNavigate} from 'react-router-dom'
+import { increaseQuantity,decreaseQuantity } from '../redux/cartReducer';
 const KEY = process.env.REACT_APP_STRIPE;
 
 const Container = styled.div``
@@ -145,6 +146,7 @@ font-weight:600;`
 
 
 const Cart = () => {
+    const dispatch = useDispatch();
     const cart = useSelector(state=>state.cart)
     const [stripeToken, setStripeToken] = useState(null)
     const history = useNavigate();
@@ -173,7 +175,14 @@ const Cart = () => {
         }
         stripeToken && makeRequest()
     }, [stripeToken,history,cart.price])
+
+    const increaseHandler = (id) =>{
+        dispatch(increaseQuantity(id))
+    }
     
+    const decreaseHandler = (id) =>{
+        dispatch(decreaseQuantity(id))
+    }
 
     return (
     <Container>
@@ -210,9 +219,9 @@ const Cart = () => {
                         </ProductDetails>
                         <PriceDetails>
                             <ProductAmountContainer>
-                                <Add />
+                                <Add onClick={()=>increaseHandler(prod._id)} />
                                 <ProductAmount>{prod.quantity}</ProductAmount>
-                                <Remove />
+                                <Remove onClick={()=>decreaseHandler(prod._id)}/>
                             </ProductAmountContainer>
                             <ProductPrice>$ {prod.quantity*prod.price}</ProductPrice>
                         </PriceDetails>

@@ -1,0 +1,7 @@
+div.active{
+    flex:10 !important;
+    filter: blur(0px) !important;
+    background-size: contain;
+    background-position: left;
+
+}
