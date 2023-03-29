@@ -29,7 +29,6 @@ const Login = () => {
       const username = formState.inputs.username.value;
       const password = formState.inputs.password.value;
         e.preventDefault();
-        console.log(formState)
         dispatch(login({username,password}))
     }
   return (

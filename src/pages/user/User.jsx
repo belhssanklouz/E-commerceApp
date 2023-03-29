@@ -22,7 +22,6 @@ export default function User() {
   const [progress,setProgress] = useState(null);
 
   const id = useParams().userId
-  console.log(id)
   const user = useSelector(state=>state.manageUsers.users).find(ele=>ele._id===id);
   // const loading = useSelector(state=>state.manageUsers.isFetching);
   const handleInput = (e) =>{

@@ -68,10 +68,8 @@ const manageUsersSlice = createSlice({
             state.error=null;
         },
         updateUserSucc:(state,action)=>{
-            console.log(action.payload)
             state.isFetching=false;
             const keys = Object.entries(action.payload.input);
-            console.log(keys)
             keys.map(([key,value])=>state.users[state.users.findIndex(item=>item._id===action.payload.id)][key] = value)
         },
         updateUserFail:(state,action)=>{

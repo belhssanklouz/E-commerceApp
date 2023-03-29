@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 
 export default function FeaturedInfo() {
   const income = useSelector(state=>state.orders.incoms);
-  console.log(income)
   return (
     <div className="featured">
       <div className="featuredItem">

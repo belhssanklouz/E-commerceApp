@@ -38,11 +38,9 @@ export default function Home() {
     }
    
   }, [MONTHS,stat])
-  console.log(stats)
   return (
     <div className="home">
       <FeaturedInfo />
-      {console.log(stats)}
       <Chart data={stats} title="User Analytics" grid dataKey="Active User"/>
       <div className="homeWidgets">
         <WidgetSm/>

@@ -30,7 +30,6 @@ export const login = (user) => async (dispatch) =>{
         const res = await publicRequest.post('/auth/admin/login',user);
         dispatch(loginSuccess(res.data));
     } catch (error) {
-        console.log(error)
         dispatch(loginFail(error.response.data));
     }
 }
@@ -42,7 +41,6 @@ export const getLastestUsers = () => async (dispatch) =>{
         const res = await userRequest.get('/users/getallusers?new=true');
         dispatch(getLastUsersSucc(res.data));
     } catch (error) {
-        console.log(error)
         dispatch(getLastUsersFail(error.response.data));
     }
 }
@@ -63,7 +61,6 @@ export const updateUsers = (user) => async (dispatch) =>{
         await userRequest.put(`/users/${user.id}`,user.input);
         dispatch(updateUserSucc(user));
     } catch (error) {
-        console.log(error)
         dispatch(updateUserFail(error));
     }
 }
@@ -85,7 +82,6 @@ export const getUser =  (id) => async(dispatch)=>{
         dispatch(getUserByIdSucc(res.data))
     } catch (error) {
         dispatch(getUserByIdFail(error))
-        console.log(error)
     }
 }
 // getAllUsers
@@ -95,7 +91,6 @@ export const getUsers = () => async (dispatch) =>{
         const res = await userRequest.get('/users/getallusers');
         dispatch(getAllUsersSucc(res.data));
     } catch (error) {
-        console.log(error)
         dispatch(getAllUsersFail(error.response?.data));
     }
 }

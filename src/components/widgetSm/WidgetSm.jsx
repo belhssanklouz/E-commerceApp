@@ -12,7 +12,7 @@ export default function WidgetSm() {
   useEffect(()=>{
     dispatch(getLastestUsers())
   },[dispatch])
-  console.log(latestUsers)
+
   return (
     <div className="widgetSm">
       <span className="widgetSmTitle">New Join Members</span>

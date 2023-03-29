@@ -12,7 +12,7 @@ export default function WidgetLg() {
   useEffect(()=>{
     dispatch(latestOrders());
   },[dispatch])
-  console.log(lastOrders)
+  
   const Button = ({ type }) => {
     return <button className={"widgetLgButton " + type}>{type}</button>;
   };

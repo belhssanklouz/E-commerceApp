@@ -22,7 +22,6 @@ export default function NewUser() {
 
   const handleInput = (e) =>{
     const {name,value} = e.target;
-    console.log(e.target)
     setInput(prev=>{
       return {...prev,[name]:value}
     })

@@ -30,7 +30,6 @@ const Order = () => {
             return {...prev,[name]:value}
         })
     }
-    console.log(inputs)
     const handleClick = () => {
         if(Object.keys(inputs).length === 0){
             return console.log("no data changes")
