@@ -4,11 +4,15 @@ import {loginFail, loginStart, loginSuccess} from "./reducers/userReducer"
 
 import { getAllUsers , getAllUsersSucc, getAllUsersFail,
          getLastUsers,getLastUsersSucc,getLastUsersFail,
+         getUserById , getUserByIdSucc , getUserByIdFail,
          addUser,addUserSucc,addUserFail,
          updateUser,updateUserSucc,updateUserFail,
          deleteUser,deleteUserSucc,deleteUserFail } from "./reducers/manageUsersReducer"
 
 import {getAllOrders,getAllOrdersSucc,getAllOrdersFail,
+        getLastOrders,getLastOrdersSucc,getLastOrdersFail,
+        updateOrder, updateOrderSucc, updateOrderFail,
+        deleteOrder,deleteOrderSucc,deleteOrderFail,
         getAllIncoms,getAllIncomsSucc,getAllIncomsFail} from "./reducers/ordersReducer"
 
 import {getAllStats,getAllStatsSucc,getAllStatsFail,
@@ -59,7 +63,7 @@ export const updateUsers = (user) => async (dispatch) =>{
         await userRequest.put(`/users/${user.id}`,user.input);
         dispatch(updateUserSucc(user));
     } catch (error) {
-        console.log(user)
+        console.log(error)
         dispatch(updateUserFail(error));
     }
 }
@@ -67,10 +71,21 @@ export const updateUsers = (user) => async (dispatch) =>{
 export const deleteUsers = (id) => async(dispatch) =>{
     dispatch(deleteUser());
     try {
-        await userRequest.get("/users/getallusers");
+        await userRequest.delete(`/users/${id}`);
         dispatch(deleteUserSucc(id));
     } catch (error) {
         dispatch(deleteUserFail(error.response.data))
+    }
+}
+// getSpecificUsers
+export const getUser =  (id) => async(dispatch)=>{
+    dispatch(getUserById())
+    try {
+        const res = await userRequest.get('/users/find/'+id);
+        dispatch(getUserByIdSucc(res.data))
+    } catch (error) {
+        dispatch(getUserByIdFail(error))
+        console.log(error)
     }
 }
 // getAllUsers
@@ -89,10 +104,51 @@ export const getOrders = () => async (dispatch) =>{
     dispatch(getAllOrders());
     try {
         const res = await userRequest.get('/orders/getallorders');
-        dispatch(getAllOrdersSucc(res.data));
+        const result = await res.data.map((item)=>{
+            const {updatedAt,createdAt,...items} = item;
+            const creationDate=createdAt.split('T').join(' ').slice(0,19);
+            const updateDate=updatedAt.split('T').join(' ').slice(0,19);
+            return {...items,creationDate,updateDate}
+        });
+        dispatch(getAllOrdersSucc(result));
     } catch (error) {
-        console.log(error)
         dispatch(getAllOrdersFail(error?.response?.data));
+    }
+}
+
+// get last Orders 
+
+export const latestOrders = () => async (dispatch) =>{
+    dispatch(getLastOrders());
+    try {
+        const lastOrders = await userRequest.get('/orders/getallorders/?new=true');
+        dispatch(getLastOrdersSucc(lastOrders.data));
+    } catch (error) {
+        dispatch(getLastOrdersFail(error));
+    }
+}
+
+// Update Order 
+
+export const orderUpdate = (id,data) => async (dispatch) =>{
+    dispatch(updateOrder());
+    try {
+        const order = await userRequest.put(`/orders/${id}`,data)
+        const orderData = order.data;
+        dispatch(updateOrderSucc({id,orderData}))
+    } catch (error) {
+        dispatch(updateOrderFail(error))
+    }
+}
+
+//Delete Order
+export const orderDelete = (id) => async (dispatch) =>{
+    dispatch(deleteOrder());
+    try {
+        await userRequest.delete(`/orders/${id}`);
+        dispatch(deleteOrderSucc(id));
+    } catch (error) {
+        dispatch(deleteOrderFail(error))
     }
 }
 

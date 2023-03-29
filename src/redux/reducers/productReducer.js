@@ -50,8 +50,8 @@ const productReducer = createSlice({
         },
         updateProductSucc:(state,action)=>{
             state.isFetching=false;
-            const keys = Object.entries(action.payload.prod);
-            keys.map(([key,value])=>state.products[state.products.findIndex(item=>item._id===action.payload.id)][key] = value)
+            const data = Object.entries(action.payload.prod);
+            data.map(([key,value])=>state.products[state.products.findIndex(item=>item._id===action.payload.id)][key] = value)
         },
         updateProductFail:(state,action)=>{
             state.isFetching=false;

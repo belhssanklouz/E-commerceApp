@@ -1,16 +1,18 @@
 import "./widgetLg.css";
 import {useDispatch,useSelector} from "react-redux";
-import { getOrders } from "../../redux/apiCalls";
+import { latestOrders } from "../../redux/apiCalls";
 import { useEffect } from "react";
 import {format} from 'timeago.js';
+import Avatar from "../Avatar/Avatar";
 
 export default function WidgetLg() {
   const dispatch = useDispatch();
-  const orders = useSelector(state=>state.orders.orders)
+  const lastOrders = useSelector(state=>state.orders.lastOrders)
 
   useEffect(()=>{
-    dispatch(getOrders());
+    dispatch(latestOrders());
   },[dispatch])
+  console.log(lastOrders)
   const Button = ({ type }) => {
     return <button className={"widgetLgButton " + type}>{type}</button>;
   };
@@ -26,16 +28,14 @@ export default function WidgetLg() {
         </tr>
         <tbody>
 
-        {orders.map(order=>(
-          
+        {lastOrders.map(order=>(
           <tr className="widgetLgTr" key={order._id}>
           <td className="widgetLgUser">
-            <img
-              src="https://images.pexels.com/photos/4172933/pexels-photo-4172933.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
-              alt=""
-              className="widgetLgImg"
-              />
-            <span className="widgetLgName">{order.userId}</span>
+            <Avatar 
+             url={order?.user?.avatar} 
+             name={order?.user?.fullname} 
+            />
+            <span className="widgetLgName">{order.user?.fullname}</span>
           </td>
           <td className="widgetLgDate">{format(order.createdAt)}</td>
           <td className="widgetLgAmount">${order.amount}</td>

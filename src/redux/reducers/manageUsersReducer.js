@@ -5,12 +5,15 @@ const manageUsersSlice = createSlice({
     initialState:{
         isFetching:false,
         users:[],
+        user:[],
         error:null,
-        lastUsers:[]
+        lastUsers:[],
+        response:''
     },
     reducers:{
         getAllUsers:(state)=>{
-            state.isFetching=true
+            state.isFetching=true;
+            state.error=null;
         },
         getAllUsersSucc:(state,action)=>{
             state.isFetching=false;
@@ -20,8 +23,21 @@ const manageUsersSlice = createSlice({
             state.isFetching=false;
             state.error=action.payload;
         },
+        getUserById:(state)=>{
+            state.isFetching=true;
+            state.error=null;
+        },
+        getUserByIdSucc:(state,action)=>{
+            state.isFetching=false;
+            state.user=action.payload;
+        },
+        getUserByIdFail:(state,action)=>{
+            state.isFetching=false;
+            state.error=action.payload;
+        },
         getLastUsers:(state)=>{
-            state.isFetching=true
+            state.isFetching=true;
+            state.error=null;
         },
         getLastUsersSucc:(state,action)=>{
             state.isFetching=false;
@@ -34,10 +50,13 @@ const manageUsersSlice = createSlice({
         //adduser
         addUser:(state)=>{
             state.isFetching=true;
+            state.error=null;
+            state.response = ''
         },
         addUserSucc:(state,action)=>{
             state.isFetching=false;
             state.users.push(action.payload);
+            state.response = 'success'
         },
         addUserFail:(state,action)=>{
             state.isFetching=false;
@@ -46,6 +65,7 @@ const manageUsersSlice = createSlice({
         //updateUser
         updateUser:(state)=>{
             state.isFetching=true;
+            state.error=null;
         },
         updateUserSucc:(state,action)=>{
             console.log(action.payload)
@@ -61,6 +81,7 @@ const manageUsersSlice = createSlice({
         //deleteuser
         deleteUser:(state)=>{
             state.isFetching=true;
+            state.error=null;
         },
         deleteUserSucc:(state,action)=>{
             state.isFetching=false;
@@ -74,6 +95,7 @@ const manageUsersSlice = createSlice({
     }
 })
 export const {  getAllUsers , getAllUsersSucc, getAllUsersFail,
+                getUserById , getUserByIdSucc , getUserByIdFail,
                 getLastUsers,getLastUsersSucc,getLastUsersFail,
                 addUser,addUserSucc,addUserFail,
                 updateUser,updateUserSucc,updateUserFail,

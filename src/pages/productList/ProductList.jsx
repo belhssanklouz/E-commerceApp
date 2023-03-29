@@ -13,7 +13,10 @@ export default function ProductList() {
   const [data, setData] = useState(productRows);
 
   const handleDelete = (id) => {
-    dispatch(deleteProd(id));
+    const confirm = window.confirm('Do you want to delete this Product');
+    if(confirm){
+      dispatch(deleteProd(id));
+    }
     // setData(data.filter((item) => item.id !== id));
   };
 

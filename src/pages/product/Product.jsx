@@ -15,7 +15,6 @@ export default function Product() {
     const filtredProd = useSelector(state=>state.products.products.find(prod=>prod._id===id));
 
     const handleInput = (e) => {
-        
         setInputs(prev=>{
             return {...prev,[e.target.name] : e.target.value}
         })
@@ -30,10 +29,9 @@ export default function Product() {
         //     desc:filtredProd?.desc,
         //     price:filtredProd?.price,
         //     inStock:filtredProd?.inStock,
-        //     })
+        //     })0
       
     },[dispatch,filtredProd,id])
-    console.log(inputs)
     const handleClick = (e) =>{
         e.preventDefault();
         dispatch(updateProd(inputs,id))

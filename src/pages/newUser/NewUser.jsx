@@ -2,18 +2,23 @@ import { useState } from "react";
 import { getStorage,ref,uploadBytesResumable,getDownloadURL } from "firebase/storage";
 import { addusers } from "../../redux/apiCalls";
 import app from "../../firebase";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "./newUser.css";
+import Loader from "../../components/loader/loader";
 
 
 
 export default function NewUser() {
   const dispatch = useDispatch();
 
+  const [uploadProgress, setUploadProgress] = useState(null);
   const [input,setInput] = useState({})
   const [isAdmin,setIsAdmin] = useState({})
   const [file,setFile] = useState(null)
 
+  const response = useSelector(state=>state.manageUsers.response);
+  const loading = useSelector(state=>state.manageUsers.isFetching);
+  const imgUploadLoading = uploadProgress ? uploadProgress < 100 ? true : false:false
 
   const handleInput = (e) =>{
     const {name,value} = e.target;
@@ -21,7 +26,6 @@ export default function NewUser() {
     setInput(prev=>{
       return {...prev,[name]:value}
     })
-    console.log(isAdmin)
   }
 
   const imgUploader = () =>{
@@ -40,9 +44,11 @@ export default function NewUser() {
         // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         console.log('Upload is ' + progress + '% done');
+        setUploadProgress(progress)
         switch (snapshot.state) {
           case 'paused':
             console.log('Upload is paused');
+            setUploadProgress('Upload Paused');
             break;
           case 'running':
             console.log('Upload is running');
@@ -69,6 +75,12 @@ export default function NewUser() {
     e.preventDefault();
     file ? imgUploader() : dispatch(addusers({...input,...isAdmin}))
   }
+
+  const capitalizeFirstLetter = (str) =>{
+    return str.charAt(0).toUpperCase()+str.slice(1,);
+  }
+
+  console.log(loading)
   return (
     <div className="newUser">
       <h1 className="newUserTitle">New User</h1>
@@ -100,27 +112,30 @@ export default function NewUser() {
         <div className="newUserItem">
           <label>Gender</label>
           <div className="newUserGender">
-            <input type="radio" name="gender" id="male" value="male" onChange={handleInput} name="sexe"/>
-            <label for="male">Male</label>
-            <input type="radio" name="gender" id="female" value="female" onChange={handleInput} name="sexe"/>
-            <label for="female">Female</label>
-            <input type="radio" name="gender" id="other" value="other" onChange={handleInput} name="sexe"/>
-            <label for="other">Other</label>
+            {["male","female","other"].map(item=>(
+              <>
+                <input type="radio" name="sexe" id={item} value={item} onChange={handleInput} />
+                <label for={item}>{capitalizeFirstLetter(item)}</label>
+              </>
+            ))}
           </div>
         </div>
         <div className="newUserItem">
           <label>Admin</label>
-          <select className="newUserSelect" name="isAdmin" id="active" defaultValue={false} onChange={(e)=>setIsAdmin({[e.target.name]:e.target.value =="true" ? true : false})}>
+          <select className="newUserSelect" name="isAdmin" id="active" defaultValue={false} onChange={(e)=>setIsAdmin({[e.target.name]:e.target.value ==="true" ? true : false})}>
             <option value={true}>Yes</option>
             <option value={false}>No</option>
           </select>
         </div>
         <div className="newUserItem">
           <label>Image</label>
-          <input type="file" id="file" onChange={(e)=>setFile(e.target.files[0])}/>        
+          <input type="file" id="file" onChange={(e)=>setFile(e.target.files[0])}/>
+          {uploadProgress && uploadProgress+"%"}     
+          {loading || imgUploadLoading ? <Loader /> : ""}   
         </div>
-          <button className="newUserButton">Create</button>
+          <button className="newUserButton" disabled={loading ? true : false}>Create</button>
       </form>
+      {response ==='success' && "user added successfully"}
     </div>
   );
 }

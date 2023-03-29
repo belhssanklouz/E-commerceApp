@@ -55,3 +55,8 @@
     border-radius: 50%;
     cursor: pointer;
 }
+@media screen and (max-width:600px){
+    .topLeft{
+      flex:0 0 100%;
+    }
+}

@@ -8,6 +8,7 @@ import {
     ChatBubbleOutline,
     WorkOutline,
     Report,
+    AttachMoney
   } from "@material-ui/icons";
 
 export const sidebarDash = [
@@ -19,7 +20,7 @@ export const sidebarDash = [
 export const sidebarQuick = [
     {title:"Users",link:"/users",icon:<PermIdentity className="sidebarIcon" />},
     {title:"Products",link:"/products",icon:<Storefront className="sidebarIcon" />},
-    // {title:"Transactions",link:"",icon:<AttachMoney className="sidebarIcon" />},
+    {title:"Orders",link:"/orders",icon:<AttachMoney className="sidebarIcon" />},
     // {title:"Reports",link:"",icon:<BarChart className="sidebarIcon" />},
 ]
     
