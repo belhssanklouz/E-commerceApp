@@ -1,4 +1,4 @@
-import { Add, Remove } from '@material-ui/icons';
+import { Add, Remove, Close } from '@material-ui/icons';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import Announcements from '../Components/Announcements'
@@ -10,8 +10,8 @@ import { useSelector } from 'react-redux';
 import StripeCheckout from 'react-stripe-checkout';
 import { useEffect,useState } from 'react';
 import { userRequest } from '../requestMethods';
-import {useNavigate} from 'react-router-dom'
-import { increaseQuantity,decreaseQuantity,removeProduct} from '../redux/cartReducer';
+import {useNavigate,Link} from 'react-router-dom'
+import { increaseQuantity,decreaseQuantity,removeProduct } from '../redux/reducers/cartReducer';
 const KEY = process.env.REACT_APP_STRIPE;
 
 const Container = styled.div``
@@ -58,6 +58,7 @@ flex:3;
 const Product = styled.div`
 display:flex;
 justify-content:space-between;
+align-items:center;
 ${mobile({flexDirection:'column'})}`
 
 
@@ -143,6 +144,17 @@ background-color:black;
 color:white;
 font-weight:600;`
 
+const IconContainer = styled.div`
+display:flex;
+justify-content:center;
+align-items:center;
+transition: 0.2s ease-in-out;
+cursor:pointer;
+&:hover{
+    background: lightgray;
+    border-radius: 2em;
+}`
+
 
 
 const Cart = () => {
@@ -159,15 +171,13 @@ const Cart = () => {
         dispatch(removeProduct(id))
     }
 
-    console.log(cart)
-
     useEffect(() => {
     
         const makeRequest = async() =>{
             try {
                 const res = await userRequest.post("/checkout/payment",{
                     tokenId:stripeToken.id,
-                    amount:500,
+                    amount:cart.total,
                 })
                 history('/success',{state:{
                     stripeData:res.data,
@@ -197,7 +207,9 @@ const Cart = () => {
         <Wrapper>
             <Title>YOUR BAG</Title>
             <Top>
-                <TopButton>CONTINUE SHOPPING</TopButton>
+                <Link to="/products">
+                    <TopButton>CONTINUE SHOPPING</TopButton>
+                </Link>
                     <TopTexts>
                         <TopText>
                            Shopping Bag 
@@ -214,7 +226,9 @@ const Cart = () => {
                     {cart?.products?.map(prod=>(
                         <>
                         <Product>
-                            <p onClick={()=>deleteHandler(prod._id)}>x</p>
+                            <IconContainer onClick={()=>deleteHandler(prod._id)}>
+                                <Close></Close>
+                            </IconContainer>
                         <ProductDetails>
                             <Image src={prod.img}/>
                             <Details>

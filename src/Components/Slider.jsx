@@ -93,13 +93,13 @@ const Slider = () => {
         <Wrapper sliderIndex={sliderIndex}>
             {sliderItems.map(item=>(
                 <Slide bg={item.bg} key={item.id}>
-            <ImgContainer><Image src={item.img} /></ImgContainer>
-            <InfoContainer>
-                <Title>{item.title}</Title>
-                <Desc>{item.desc}</Desc>
-                <Button>Show now</Button>
-            </InfoContainer>
-            </Slide>
+                    <ImgContainer><Image src={item.img} /></ImgContainer>
+                    <InfoContainer>
+                        <Title>{item.title}</Title>
+                        <Desc>{item.desc}</Desc>
+                        <Button>Show now</Button>
+                    </InfoContainer>
+                </Slide>
             ))}
         </Wrapper>
         <Arrow direction="right" onClick={()=>sliderHandler("right")}>

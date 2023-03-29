@@ -9,7 +9,7 @@ import Newsletter from "../Components/Newsletter"
 import { mobile } from "../responsive"
 import { publicRequest } from "../requestMethods"
 import { useDispatch } from "react-redux"
-import { addProduct } from "../redux/cartReducer"
+import { addProduct } from "../redux/reducers/cartReducer"
 
 const Container =styled.div`
 

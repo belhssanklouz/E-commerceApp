@@ -27,7 +27,6 @@ padding: 10px 0px;
 height:80vh;
 border-radius:20px;
 margin:10px;
-cursor:pointer;
 color:white;
 flex:1;
 background-image:url("${props=>props.img}");
@@ -38,7 +37,7 @@ background-repeat:no-repeat;
 position:relative;
 transition:all 0.7s ease-in-out;
 filter:blur(4px);
-${props=>props.active && "flex:10;filter: blur(0px);background-size: contain;background-position: right;" }
+${props=>props.active ? "flex:10;filter: blur(0px);background-size: contain;background-position: right;" : "cursor:pointer;"}
 ${mobile({
     width:"90vw",
     borderRadius:"20px",

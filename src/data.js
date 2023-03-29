@@ -9,9 +9,9 @@ export const sliderItems = [
     },
     {
       id: 2,
-      img: "/assets/best-men-online-shopping-jcrew-luxe-digital.png",
-      title: "AUTUMN COLLECTION",
-      desc: "DON'T COMPROMISE ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS.",
+      img: "/assets/young-people.png",
+      title: "SPRING COLLECTION",
+      desc: "GET FLAT 30% OFF FOR NEW ARRIVALS.",
       bg: "fcf1ed",
       active:false
     },

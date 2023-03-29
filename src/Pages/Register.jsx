@@ -1,5 +1,11 @@
+import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
+import Inputs from '../Components/Input'
+import { signUp } from '../redux/apiCalls'
+import { inputChange } from '../redux/reducers/registerReducer'
 import { mobile } from '../responsive'
+import './register.css'
 
 const Container = styled.div`
 width:100vw;
@@ -29,12 +35,14 @@ const Form = styled.form`
     flex-wrap:wrap;
 `
 
-const Input = styled.input`
-flex:1;
-min-width:40%;
-margin:20px 10px 0px 0px;
-padding:10px;
-`
+// const Input = styled.input`
+// flex:1;
+// min-width:40%;
+// margin:20px 10px 0px 0px;
+// padding:10px;
+// ${props=>props.exists && 
+//     `border:2px solid red`}
+// `
 
 const Aggrement = styled.span`
 font-size:12px;
@@ -46,25 +54,60 @@ padding: 15px 20px;
 width:40%;
 background-color:teal;
 color:white;
-cursor:pointer;`
+cursor:pointer;
+    ${props=>props.disabled && `
+        cursor:not-allowed;
+        background-color:gray;
+    `}
+    ${props=>props.btnLoading ? `
+    animation-duration: 2s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    animation-name: animationloading;
+    animation-timing-function: linear;
+    background-color: #f6f7f8;
+    background: linear-gradient(to right, #eeeeee 8%, #bbbbbb 18%, #eeeeee 33%);
+    background-size: 800px 104px;
+    position: relative;
+    cursor:not-allowed;
+    `:""}
+    `
+
 
 const Register = () => {
+    const dispatch = useDispatch()
+    const [input,setInput] = useState({});
+    const response = useSelector(state=>state.register.registerResponse);
+    const loading = useSelector(state=>state.register.isFetching);
+
+    const handleInput = (e) =>{
+        const {name,value} = e.target;
+        setInput({...input,[name]:value})
+        if(name==="email" || name==="username"){
+            dispatch(inputChange())
+        }
+    }
+    const handleCreateUser = (e) =>{
+        e.preventDefault();
+        const {retypepassword,firstname,lastname,...allValues} = input;
+        dispatch(signUp({...allValues,fullname:firstname+" "+lastname}));
+    }
+
   return (
     <Container>
-        <Wrapper>
-            
+        <Wrapper>  
             <Title>Create an account</Title>
-            <Form>
-                <Input placeholder="name" />
-                <Input placeholder="last name" />
-                <Input placeholder="username" />
-                <Input placeholder="email" />
-                <Input placeholder="password" />
-                <Input placeholder="confirm password" />
+            <Form onSubmit={handleCreateUser}>
+                <Inputs onChange={handleInput} name="firstname" placeholder="first name" />
+                <Inputs onChange={handleInput} name="lastname" placeholder="last name" />
+                <Inputs onChange={handleInput} name="username" placeholder="username" existError={response==="username already exist"} error={response} required />
+                <Inputs onChange={handleInput} name="email" placeholder="email" type="email" existError={response==="email already exist"} error={response} required />
+                <Inputs onChange={handleInput} name="password" placeholder="password" type="password" required />
+                <Inputs onChange={handleInput} name="retypepassword" placeholder="confirm password" type='password' required/>
                 <Aggrement>By creating an account, I consent to the processing of my personal
                     data in accordance with the <b>PRIVACY POLICY</b>
                 </Aggrement>
-                <Button>Create</Button>
+                <Button btnLoading={loading} disabled={input?.password !== input?.retypepassword }>Create</Button>
             </Form>        
         </Wrapper>
     </Container>

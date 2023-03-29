@@ -1,6 +1,6 @@
 import React,{useState,useEffect} from 'react'
 import { useLocation } from 'react-router-dom'
-import { userRequest } from '../requestMethods';
+import { publicRequest } from '../requestMethods';
 import {useSelector} from "react-redux";
 
 
@@ -11,16 +11,34 @@ const Success = () => {
     const [orderId, setOrderId] = useState(null);
     const {currentUser} = useSelector(state=>state.user)
 
-
     useEffect(() => {
       const addOrder = async() =>{
         try {
-            const res = userRequest.post('/addorder',{
-              userId: currentUser._id,
+            const res = await publicRequest.post('/orders/addorder',{
+              user:currentUser ? 
+              {
+                _id:currentUser._id,
+                fullname:currentUser.fullname || data.billing_details.name,
+                avatar:currentUser.avatar,
+                email:currentUser.email,
+                phone:currentUser.phone,
+                username:currentUser.username,
+                createdAt:currentUser.createdAt
+              } : {
+                fullname:data.billing_details.name,
+              },
+              userType:currentUser ? "User" : "Guest",
               products: cart.products.map((item) => ({
                 productId: item._id,
-                quantity: item._quantity,
+                productImg:item.img,
+                productName:item.title,
+                quantity: item.quantity,
+                price:item.price,
+                total:item.quantity*item.price,
+                size:item.size,
+                color:item.color
               })),
+              paymentMethod:data.payment_method_details,
               amount: cart.total,
               address: data.billing_details.address,
             });
@@ -32,7 +50,6 @@ const Success = () => {
       addOrder()
     }, [cart,data,currentUser])
     
-    console.log(location)
   return (
     <div
     style={{
