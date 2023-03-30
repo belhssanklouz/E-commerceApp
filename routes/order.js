@@ -1,10 +1,10 @@
 const router = require("express").Router();
 const order = require("../models/order");
 const Order = require('../models/order');
-const { verifyTokenAndAdmin } = require("./verifyToken");
+const { verifyTokenAndAdmin, verifyToken } = require("./verifyToken");
 //Create
 
-router.post('/addorder',verifyTokenAndAdmin,async (req,res)=>{
+router.post('/addorder',async (req,res)=>{
     const newOrder = new Order (req.body);
     try {
         const savecOrder = await newOrder.save();
@@ -38,7 +38,7 @@ router.delete('/:id',verifyTokenAndAdmin, async(req,res)=>{
 })
 
 //Get user ORder
-router.get('/find/:userId', async(req,res)=>{
+router.get('/find/:userId',verifyToken, async(req,res)=>{
     try {
         const orders = await Order.find({userId : req.params.userId})
         res.status(200).json(orders)
@@ -48,7 +48,7 @@ router.get('/find/:userId', async(req,res)=>{
 })
 
 //Get all orders
-router.get('/getallorders', async(req,res)=>{
+router.get('/getallorders',verifyTokenAndAdmin, async(req,res)=>{
     const query = req.query.new;
     try {
         let orders;
