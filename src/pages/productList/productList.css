@@ -29,3 +29,8 @@
     color: red;
     cursor: pointer;
 }
+.productList .addProduct{
+    width: auto;
+    text-align: right;
+    padding: 20px;
+}

@@ -79,7 +79,6 @@ export default function NewUser() {
     return str.charAt(0).toUpperCase()+str.slice(1,);
   }
 
-  console.log(loading)
   return (
     <div className="newUser">
       <h1 className="newUserTitle">New User</h1>

@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { deleteUsers } from "../../redux/apiCalls";
+import Avatar from "../../components/Avatar/Avatar";
 
 export default function UserList() {
   const dispatch = useDispatch();
@@ -31,8 +32,8 @@ export default function UserList() {
       renderCell: (params) => {
         return (
           <div className="userListUser">
-            <img className="userListImg" src={params.row.avatar} alt="" />
-            {params.row.username}
+            <Avatar url={params.row.avatar} name={params.row.fullname || params.row.username  } />
+            { params.row.fullname || params.row.username}
           </div>
         );
       },
@@ -66,6 +67,11 @@ export default function UserList() {
 
   return (
     <div className="userList">
+      <div className="addUserButton">
+        <Link to="/newUser">
+          <button className="userAddButton">Create</button>
+        </Link>
+      </div>
       <DataGrid
         rows={users}
         getRowId={(row)=>row._id}

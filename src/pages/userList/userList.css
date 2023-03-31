@@ -29,3 +29,8 @@
     color: red;
     cursor: pointer;
 }
+.addUserButton{
+  width: auto;
+  text-align: right;
+  padding: 20px;
+}

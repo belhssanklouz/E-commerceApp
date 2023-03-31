@@ -120,7 +120,9 @@ const Order = () => {
                     </tr>
                 </tbody>
                </table>
-                    <button onClick={handleClick} className="productButton">Update</button>
+               <div className="buttonContainer">
+                    <button onClick={handleClick} className="orderButton">Update</button>
+               </div>
                </div>
              </div>
   )

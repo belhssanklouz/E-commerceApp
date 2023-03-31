@@ -6,6 +6,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import { Link } from 'react-router-dom'
 import { DataGrid } from '@material-ui/data-grid'
 import { getUser, orderDelete } from '../../redux/apiCalls';
+import Avatar from '../../components/Avatar/Avatar';
 
 const OrderList = () => {
 
@@ -22,9 +23,7 @@ const OrderList = () => {
       renderCell: (params) => {
         return (
           <div className="userListUser">
-            {params.row.userType==='Guest' ? "" :
-            <img className="userListImg" src={params.row.user.avatar} alt="" />
-            }
+            <Avatar url={params.row.user?.avatar} name={params.row.user?.fullname} />
             {params.row.user?.fullname}
           </div>
         );

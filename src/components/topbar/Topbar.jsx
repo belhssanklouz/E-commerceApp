@@ -1,11 +1,14 @@
 import React from "react";
 import "./topbar.css";
-import { NotificationsNone, Language, Settings } from "@material-ui/icons";
-import { useDispatch } from "react-redux";
+import { NotificationsNone, Language, Settings, ExitToApp } from "@material-ui/icons";
+import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/reducers/userReducer";
+import Avatar from "../Avatar/Avatar";
 
 export default function Topbar() {
   const dispatch = useDispatch();
+
+  const user = useSelector(state=>state.user.currentUser)
 
   const handleLogout = (e) =>{
     e.preventDefault();
@@ -31,9 +34,9 @@ export default function Topbar() {
             <Settings />
           </div>
           <div className="topbarIconContainer">
-            <button onClick={handleLogout}>Logout</button>
+            <ExitToApp onClick={handleLogout} />
           </div>
-          <img src="https://images.pexels.com/photos/1526814/pexels-photo-1526814.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500" alt="" className="topAvatar" />
+          <Avatar url={user.avatar} name={ user.fullname || user.username } />
         </div>
       </div>
     </div>

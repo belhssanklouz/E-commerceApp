@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import {useDispatch,useSelector} from 'react-redux';
 import { getLastestUsers } from "../../redux/apiCalls";
 import Avatar from "../Avatar/Avatar";
+import { Link } from "react-router-dom";
 
 export default function WidgetSm() {
   const latestUsers = useSelector(state=>state.manageUsers.lastUsers)
@@ -29,10 +30,12 @@ export default function WidgetSm() {
                 <span className="widgetSmUserTitle">{user.email}</span>
               </div>
           </div>
-          <button className="widgetSmButton">
-            <Visibility className="widgetSmIcon" />
-            Display
-          </button>
+          <Link to={"/user/"+user._id}>
+            <button className="widgetSmButton">
+              <Visibility className="widgetSmIcon" />
+              Display
+            </button>
+          </Link>
         </li>
           ))}
       </ul>

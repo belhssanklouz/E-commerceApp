@@ -15,6 +15,7 @@ import {useEffect} from 'react';
 import {getStats,getIncoms, getProducts, getUsers, getOrders} from './redux/apiCalls'
 import OrderList from "./pages/orderlist/OrderList";
 import Order from "./pages/order/Order"
+import ScrollToTop from "./ScrollToTop";
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -29,47 +30,50 @@ function App() {
   const admin = error === "Invalid Token" ? null : JSON.parse(localStorage.getItem("user"));
   return (
     <Router>
-    <Switch>
-        <Route path="/login">
-           {!admin ? <Login /> : <Redirect to="/" />}
-        </Route>
-      { admin ? (
-      <><Topbar />
-      <Route render={(props)=>(
-        <div className="container">
-        <Sidebar {...props}/>
-          <Route exact path="/">
-            <Home />
+      <ScrollToTop>
+
+      <Switch>
+          <Route path="/login">
+            {!admin ? <Login /> : <Redirect to="/" />}
           </Route>
-          <Route path="/users">
-            <UserList />
-          </Route>
-          <Route path="/user/:userId">
-            <User />
-          </Route>
-          <Route path="/newUser">
-            <NewUser />
-          </Route>
-          <Route path="/orders">
-            <OrderList />
-          </Route>
-          <Route path="/order/:orderId">
-            <Order />
-          </Route>
-          <Route path="/products">
-            <ProductList />
-          </Route>
-          <Route path="/product/:productId">
-            <Product />
-          </Route>
-          <Route path="/newproduct">
-            <NewProduct />
-          </Route>
-          </div>
-          )}/>
+        { admin ? (
+        <><Topbar />
+        <Route render={(props)=>(
+          <div className="container">
+          <Sidebar {...props}/>
+            <Route exact path="/">
+              <Home />
+            </Route>
+            <Route path="/users">
+              <UserList />
+            </Route>
+            <Route path="/user/:userId">
+              <User />
+            </Route>
+            <Route path="/newUser">
+              <NewUser />
+            </Route>
+            <Route path="/orders">
+              <OrderList />
+            </Route>
+            <Route path="/order/:orderId">
+              <Order />
+            </Route>
+            <Route path="/products">
+              <ProductList />
+            </Route>
+            <Route path="/product/:productId">
+              <Product />
+            </Route>
+            <Route path="/newproduct">
+              <NewProduct />
+            </Route>
+            </div>
+            )}/>
           </>):
           <Redirect to='/login' />}
         </Switch>
+      </ScrollToTop>
     </Router>
   );
 }

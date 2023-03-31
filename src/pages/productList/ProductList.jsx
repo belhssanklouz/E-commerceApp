@@ -63,6 +63,11 @@ export default function ProductList() {
 
   return (
     <div className="productList">
+      <div className="addProduct">
+        <Link to="/newproduct">
+          <button className="productAddButton">Create</button>
+        </Link>
+      </div>
       <DataGrid
         rows={products}
         getRowId={(row)=>row._id}

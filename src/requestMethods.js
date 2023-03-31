@@ -1,5 +1,5 @@
 import axios from "axios";
-const BASE_URL = "http://localhost:5000/api/"
+const BASE_URL = "https://backend-ecommerce-qoka.onrender.com/api/"
 const TOKEN = JSON.parse(localStorage.getItem("user"))
 
 export const publicRequest = axios.create({

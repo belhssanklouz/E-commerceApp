@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import "./product.css";
 import Chart from "../../components/chart/Chart"
 // import {productData} from "../../dummyData"
@@ -6,9 +6,14 @@ import { Publish } from "@material-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { prodStatss,updateProd } from "../../redux/apiCalls";
+import { getStorage,ref,uploadBytesResumable,getDownloadURL } from "firebase/storage";
+import app from "../../firebase";
 
 export default function Product() {
-    const [inputs,setInputs] = useState({})
+    const [inputs,setInputs] = useState({});
+    const [file,setFile] = useState(null)
+    const [progress,setProgress] = useState(null)
+
     const id = useParams().productId;
     const dispatch = useDispatch();
     const prodStats = useSelector(state=>state.stats.prodStats);
@@ -32,18 +37,63 @@ export default function Product() {
         //     })0
       
     },[dispatch,filtredProd,id])
+
+    const imgUploader = () =>{
+
+        const storage = getStorage(app);
+        const storageRef = ref(storage,new Date().getTime() + file.name)
+        const uploadTask = uploadBytesResumable(storageRef, file);
+    
+        // Register three observers:
+        // 1. 'state_changed' observer, called any time the state changes
+        // 2. Error observer, called on failure
+        // 3. Completion observer, called on successful completion
+        uploadTask.on('state_changed', 
+          (snapshot) => {
+            // Observe state change events such as progress, pause, and resume
+            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log('Upload is ' + progress + '% done');
+            setProgress(progress + "%")
+            switch (snapshot.state) {
+              case 'paused':
+                console.log('Upload is paused');
+                break;
+              case 'running':
+                console.log('Upload is running');
+                break;
+                default:
+            }
+          }, 
+          (error) => {
+            // Handle unsuccessful uploads
+          }, 
+          () => {
+            // Handle successful uploads on complete
+            // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+             const product = {...inputs,img:downloadURL}; 
+             dispatch(updateProd(product,id))
+    
+            });
+          }
+        );
+    
+      }
+
     const handleClick = (e) =>{
         e.preventDefault();
-        dispatch(updateProd(inputs,id))
+        if(file){
+            imgUploader()
+        }else{
+            dispatch(updateProd(inputs,id))
+        } 
     }
-
+console.log(filtredProd?.inStock)
   return (
              <div className="product">
                <div className="productTitleContainer">
                  <h1 className="productTitle">Product</h1>
-                 <Link to="/newproduct">
-                   <button className="productAddButton">Create</button>
-                 </Link>
                </div>
                <div className="productTop">
                    <div className="productTopLeft">
@@ -85,18 +135,19 @@ export default function Product() {
                            <input type="text" name='price' placeholder={filtredProd?.price} onChange={handleInput}/>
                            <label>In Stock</label>
                            <select name="inStock" id="idStock" defaultValue={filtredProd?.inStock} onChange={handleInput}>
-                               <option value="yes">Yes</option>
-                               <option value="no">No</option>
+                               <option value="true" selected={filtredProd?.inStock}>Yes</option>
+                               <option value="false" selected={!filtredProd?.inStock}>No</option>
                            </select>
                            
                        </div>
                        <div className="productFormRight">
                            <div className="productUpload">
                                <img src={filtredProd?.img} alt="" className="productUploadImg" />
-                               <label for="file">
+                               <label htmlFor="file">
                                    <Publish/>
                                </label>
-                               <input type="file" id="file" style={{display:"none"}} />
+                               <input type="file" id="file" style={{display:"none"}} onChange={(e)=>setFile(e.target.files[0])} />
+                               {progress}
                            </div>
                            <button onClick={handleClick} className="productButton">Update</button>
                        </div>

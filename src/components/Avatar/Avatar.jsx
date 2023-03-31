@@ -11,7 +11,7 @@ function Avatar ({url,name}) {
         )
     }
 
-    const avatarAlphabet = name.split(' ');
+    const avatarAlphabet = name?.split(' ');
     return (
             <div className='avatar'>
                 {avatarAlphabet.map(word=>word[0].toUpperCase())}
