@@ -2,8 +2,8 @@ import "./widgetLg.css";
 import {useDispatch,useSelector} from "react-redux";
 import { latestOrders } from "../../redux/apiCalls";
 import { useEffect } from "react";
-import {format} from 'timeago.js';
 import Avatar from "../Avatar/Avatar";
+import ReactTimeago from "react-timeago";
 
 export default function WidgetLg() {
   const dispatch = useDispatch();
@@ -37,7 +37,8 @@ export default function WidgetLg() {
             />
             <span className="widgetLgName">{order.user?.fullname}</span>
           </td>
-          <td className="widgetLgDate">{format(order.createdAt)}</td>
+          <td className="widgetLgDate">
+            <ReactTimeago date={order.createdAt} /></td>
           <td className="widgetLgAmount">${order.amount}</td>
           <td className="widgetLgStatus">
             <Button type={order.status} />

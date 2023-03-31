@@ -8,7 +8,7 @@ import {
 } from "@material-ui/icons";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { updateUsers } from "../../redux/apiCalls";
 import { getStorage,ref,uploadBytesResumable,getDownloadURL } from "firebase/storage";
 import app from "../../firebase";

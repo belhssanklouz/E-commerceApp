@@ -1,17 +1,16 @@
 import './orderlist.css'
 
-import React, { useEffect } from 'react'
+import React from 'react'
 import { DeleteOutline } from "@material-ui/icons";
 import {useDispatch, useSelector} from 'react-redux'
 import { Link } from 'react-router-dom'
 import { DataGrid } from '@material-ui/data-grid'
-import { getUser, orderDelete } from '../../redux/apiCalls';
+import { orderDelete } from '../../redux/apiCalls';
 import Avatar from '../../components/Avatar/Avatar';
 
 const OrderList = () => {
 
   let orders = useSelector(state=>state.orders.orders);
-  const users = useSelector(state=>state.manageUsers.users)
   const dispatch = useDispatch();
   
   const columns = [

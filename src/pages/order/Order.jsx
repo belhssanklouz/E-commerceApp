@@ -1,9 +1,7 @@
 import './order.css'
 import React, { useState }from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import Chart from "../../components/chart/Chart"
-import { Publish } from '@material-ui/icons'
 import { orderUpdate } from '../../redux/apiCalls'
 
 
@@ -12,8 +10,6 @@ const Order = () => {
     const [inputs, setInputs] = useState({})
 
     const orders = useSelector(state=>state.orders.orders);
-    const users = useSelector(state=>state.manageUsers.users);
-    const products = useSelector(state=>state.products.products)
     const orderId = useParams().orderId;
     const dispatch = useDispatch()
     
