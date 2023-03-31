@@ -7,11 +7,13 @@ import Register from "./Pages/Register";
 import {BrowserRouter,Routes,Route, Navigate} from "react-router-dom";
 import Success from "./Pages/Success";
 import { useSelector } from "react-redux";
+import ScrollToTop from './ScrollToTop'
 
 const App = () => {
   const user = useSelector(state=>state.user.currentUser);
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         {user ? (<>
           <Route path="/" element={<Home />} />
