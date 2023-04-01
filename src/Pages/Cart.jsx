@@ -190,7 +190,7 @@ const Cart = () => {
             
         }
         stripeToken && makeRequest()
-    }, [stripeToken,history,cart?.price])
+    }, [stripeToken,history,cart?.price,cart])
 
     const increaseHandler = (id) =>{
         dispatch(increaseQuantity(id))
