@@ -2,26 +2,34 @@ import { useState,useEffect } from "react"
 import styled from "styled-components"
 import ProductItem from "./ProductItem"
 import { publicRequest } from "../requestMethods";
+import Preloading from "./Preloading";
 
 const Container = styled.div`
 display:flex;
 padding:20px;
 flex-wrap:wrap;
 justify-content:space-between;
+transition : 1s ease-in-out;
 `
 const Products = ({cat,filters,sort}) => {
 
   const [products,setProducts] = useState([])
   const [filterProducts,setFilterProducts] = useState([])
+  const [loading,setLoading] = useState(false);
 
   useEffect(() => {
     const getProducts  = async() =>{
+      setLoading(true)
+      setTimeout(function(){
+        return 0 
+      },3000)
       try {
         const ress = await publicRequest.get(cat ? `/products/getallproducts?=category=${cat}` :
         "/products/getallproducts")
-        setProducts(ress.data)
+        setProducts(ress.data);
+        setLoading(false)
       } catch (error) {
-        
+        setLoading(false)
       }
     }
     getProducts();
@@ -46,7 +54,7 @@ const Products = ({cat,filters,sort}) => {
 
   return (
     <Container>
-        {cat ? filterProducts.map(item=>(
+        { loading ? <Preloading />  : cat ? filterProducts.map(item=>(
             <ProductItem item={item} key={item._id}/>
         )):products.map(item=>(
           <ProductItem  item={item} key={item._id}/>
